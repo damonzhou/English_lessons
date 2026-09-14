@@ -166,17 +166,36 @@ Exit Task：完成 45–60 秒 lunch / picnic role-play。
 
 ---
 
-## 5. Welcome Unit 文件
+## 5. Welcome Unit 文件与使用顺序
 
-- `full_teaching_plan.md`：**完整可直接上课的 W1–W6 家长备课稿**，包含核心句型、听力活动、替换素材、扩句和 Exit Task。
-- `listening_speaking_drill_bank.md`：**专门的听力 + 口语训练素材库**，包含口头指令、问答库、随机词槽、角色扮演、延迟提取卡等。
-- `practice_templates.md`：Welcome A–D 的句型与短语练习模板。
-- `substitution_drill_bank.md`：大量可随机组合的句型替换素材。
-- `sentence_expansion_templates.md`：简单句逐层扩展训练。
+### 课堂主入口
 
-备课时优先顺序：
+- `full_teaching_plan.md`：**单文件可直接上课版**。W1–W6 每一课已经直接嵌入当堂使用的核心句型、Core Drill Set、主语/肯否/问句变化、Listening Prompt、Sentence Expansion、Real-use Task 和 Delayed Recall。
 
-**教材 / Audio → `full_teaching_plan.md` → `listening_speaking_drill_bank.md` → 根据需要从两个素材库追加 Drill。**
+正常上课时，优先只打开这一份文件即可。
+
+### 备用素材池
+
+- `listening_speaking_drill_bank.md`：听力指令、问答库、随机词槽、角色扮演、延迟提取卡等；
+- `substitution_drill_bank.md`：大量可随机组合的句型替换素材；
+- `sentence_expansion_templates.md`：简单句逐层扩展训练；
+- `practice_templates.md`：Welcome A–D 的基础句型与短语练习模板。
+
+使用原则：
+
+**备课稿负责“顺序与精选”，素材库负责“数量与变化”。**
+
+只有当：
+- 当堂精选素材已经练熟；
+- Day 2 / Day 4 需要换题做延迟复现；
+- 某个句型仍不够自动；
+- 需要迁移到新场景；
+
+才打开备用素材池追加练习。
+
+推荐使用顺序：
+
+**教材 / Audio → `full_teaching_plan.md` → 如有需要再从备用素材库追加。**
 
 ---
 
