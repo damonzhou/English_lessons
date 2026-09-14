@@ -217,3 +217,30 @@ Exit Task：
 - L4 = 真实口语/写作能主动调用。
 
 对她目前最值得观察的是：**有多少内容已经 L2/L3，但还没到 L4。**
+
+---
+
+## 6. 简单句扩展训练
+
+Welcome Unit 新增 `sentence_expansion_templates.md`，用于把已经会说的基础短句逐层扩展。
+
+推荐扩展维度：
+
+**基础句 → 时间 → 地点 → 人物 → 频率 → 原因 / 方式 → 2–3 句连贯表达**
+
+例如：
+
+> I play badminton.
+>
+> I usually play badminton after school with my friends because it's fun.
+
+但训练目标不是把所有信息塞进一个超长句。必要时应自然拆开：
+
+> I usually play badminton after school with my friends. We often play for about an hour because it's fun.
+
+Welcome 阶段重点看三点：
+- 扩展后主干语法是否仍正确；
+- 能否根据 `when / where / who with / how often / why` 自主补充信息；
+- 能否从一个短句过渡到 2–3 句连续表达。
+
+详细模板和练习卡见 `sentence_expansion_templates.md`。
