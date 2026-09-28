@@ -1,0 +1,15 @@
+# Local configuration and real learner data must not be committed.
+/.obsidian/
+/private/
+/02-Sessions/*
+!/02-Sessions/SESSION_TEMPLATE.md
+/03-Listening-Cards/*
+!/03-Listening-Cards/CARD_TEMPLATE.md
+/04-Reviews/*
+!/04-Reviews/QUEUE.md
+/05-Weekly/*
+!/05-Weekly/REVIEW_TEMPLATE.md
+/assets/*
+!/assets/README.md
+.DS_Store
+Thumbs.db

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>听力练习 · 本地音频播放器</title>
+<style>
+body{font:17px/1.7 system-ui,sans-serif;max-width:840px;margin:40px auto;padding:0 20px;background:#f6f7f9;color:#17202a}main{background:white;padding:28px;border-radius:16px;border:1px solid #dde2e8}h1{font-size:26px}h2{font-size:19px;margin-top:24px}.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:16px 0}button,input,select{font:inherit}button{padding:8px 14px;border:1px solid #bdc7d3;border-radius:8px;background:#f5f7fa;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}input[type=number]{width:110px;padding:6px}audio{width:100%}.small{font-size:14px;color:#465366}.status{padding:12px;background:#eef3f8;border-radius:8px}label{display:inline-flex;align-items:center;gap:6px}details{margin-top:24px}textarea{width:100%;min-height:140px;box-sizing:border-box;font:inherit}a{color:#194d80}
+</style>
+</head>
+<body><main>
+<h1>听力练习 · 本地音频播放器</h1>
+<p>先听音频，后看文字。本工具只辅助播放，不测级、不评分、不保存练习记录。</p>
+<p><input id="file" type="file" accept="audio/*" aria-label="选择本地音频"></p>
+<audio id="audio" controls preload="metadata"></audio>
+<div class="row"><label>速度 <select id="rate"><option value="0.85">0.85×（练习辅助）</option><option value="1" selected>1.00×（原速）</option><option value="1.1">1.10×</option></select></label><button id="again" disabled>从A点播放</button></div>
+<div class="row"><label>A点（秒）<input id="start" type="number" value="0" min="0" step="0.1"></label><button id="markA" disabled>当前位置设为A</button></div>
+<div class="row"><label>B点（秒）<input id="end" type="number" value="0" min="0" step="0.1"></label><button id="markB" disabled>当前位置设为B</button><label><input id="loop" type="checkbox">区间循环</label></div>
+<p id="status" class="status" role="status" aria-live="polite">请选择一份你有权使用的本地音频。文件不会由本工具上传。</p>
+<details id="textPanel"><summary>对照阶段再展开文字</summary><p class="small">由家长粘贴原文。展开后再答对，不应记录为未见稿首听。</p><textarea aria-label="原文，仅对照阶段显示" placeholder="此处不会自动转写，也没有预置音频或原文。"></textarea></details>
+<h2>播放时的记录条件</h2><p class="small">家长另行记录：是否看稿、是否使用慢速、重播次数与提示。遮稿复听时收起文字，并恢复1.00×。浏览器区间循环不是样本级精确音频编辑。</p>
+<p class="small">本页不依赖网络、插件或API；关闭后不会保存文本、A/B点或记录。已在代码层进行检查，但未在你的浏览器或设备上验收。</p>
+</main>
+<script>
+'use strict';
+const el=(id)=>document.getElementById(id);
+const audio=el('audio');
+let objectUrl=null;
+const status=(text)=>{el('status').textContent=text;};
+function bounds(){
+ const a=Number(el('start').value),b=Number(el('end').value);
+ if(!Number.isFinite(audio.duration)||!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<=a||b>audio.duration+0.06){
+   status('请先加载音频，并设置 0 ≤ A < B ≤ 音频时长。');return null;
+ }
+ return {a,b};
+}
+async function playFromA(){const q=bounds();if(!q)return;audio.currentTime=q.a;try{await audio.play();}catch(e){status('播放未开始，请使用音频控件手动播放。');}}
+el('file').addEventListener('change',()=>{
+ const f=el('file').files[0];if(!f)return;
+ audio.pause();if(objectUrl)URL.revokeObjectURL(objectUrl);
+ objectUrl=URL.createObjectURL(f);audio.src=objectUrl;el('loop').checked=false;el('start').value='0';el('end').value='0';
+ ['again','markA','markB'].forEach(id=>el(id).disabled=true);
+ status('正在本地加载：'+f.name);audio.load();
+});
+audio.addEventListener('loadedmetadata',()=>{
+ if(!Number.isFinite(audio.duration)||audio.duration<=0){status('无法取得可靠时长，区间功能未启用。');return;}
+ el('end').value=(Math.floor(audio.duration*10)/10).toFixed(1);
+ ['again','markA','markB'].forEach(id=>el(id).disabled=false);
+ audio.playbackRate=Number(el('rate').value);
+ status('音频已载入，时长约 '+audio.duration.toFixed(1)+' 秒。请先做不看文字的听力任务。');
+});
+audio.addEventListener('error',()=>{status('音频无法解码，请换用浏览器支持的音频格式。');['again','markA','markB'].forEach(id=>el(id).disabled=true);});
+el('rate').addEventListener('change',()=>{audio.playbackRate=Number(el('rate').value);});
+el('markA').addEventListener('click',()=>{el('start').value=audio.currentTime.toFixed(1);});
+el('markB').addEventListener('click',()=>{el('end').value=(Math.floor(audio.currentTime*10)/10).toFixed(1);});
+el('again').addEventListener('click',playFromA);
+el('loop').addEventListener('change',()=>{if(el('loop').checked&&!bounds())el('loop').checked=false;});
+['start','end'].forEach(id=>el(id).addEventListener('change',()=>{if(el('loop').checked&&!bounds())el('loop').checked=false;}));
+audio.addEventListener('timeupdate',()=>{
+ if(!el('loop').checked||audio.paused)return;const q=bounds();
+ if(!q){el('loop').checked=false;return;}
+ if(audio.currentTime>=q.b||audio.currentTime<q.a)audio.currentTime=q.a;
+});
+audio.addEventListener('ended',()=>{if(el('loop').checked)playFromA();});
+window.addEventListener('beforeunload',()=>{if(objectUrl)URL.revokeObjectURL(objectUrl);});
+</script></body></html>
